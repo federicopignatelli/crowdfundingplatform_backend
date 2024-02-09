@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Campaign {
     @Id
     @GeneratedValue
-    private UUID id;
+    private UUID campaignId;
     private String title;
     private String subtitle;
     private String category;
@@ -28,7 +28,7 @@ public class Campaign {
     private String campaignCover;
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private User user_id;
+    private User userId;
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
     private List<Contribution> contributionList;
 }

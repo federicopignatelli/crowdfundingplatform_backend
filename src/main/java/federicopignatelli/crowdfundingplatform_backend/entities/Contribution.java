@@ -19,13 +19,13 @@ import java.util.UUID;
 public class Contribution {
     @Id
     @GeneratedValue
-    private UUID id;
+    private UUID contributionId;
     private int amount;
     private LocalDate emissionDate = LocalDate.now();
     private LocalTime emissionTime = LocalTime.now();
     @ManyToOne
     @JoinColumn(name = "contributor")
-    private User user_id;
+    private User userId;
     @ManyToOne
     @JoinColumn(name = "campaign")
     private Campaign campaign;

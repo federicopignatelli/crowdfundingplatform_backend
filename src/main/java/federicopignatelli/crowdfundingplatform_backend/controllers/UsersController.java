@@ -26,6 +26,7 @@ public class UsersController {
 		return usersService.getUsers(page, size, orderBy);
 	}
 
+
 	@GetMapping("/me")
 	public User getProfile(@AuthenticationPrincipal User currentUser) {
 		return currentUser;
@@ -33,12 +34,12 @@ public class UsersController {
 
 	@PutMapping("/me")
 	public User getMeAndUpdate(@AuthenticationPrincipal User currentUser, @RequestBody User body) {
-		return usersService.findByIdAndUpdate(currentUser.getId(), body);
+		return usersService.findByIdAndUpdate(currentUser.getUserId(), body);
 	}
 
 	@DeleteMapping("/me")
 	public void getMeAnDelete(@AuthenticationPrincipal User currentUser) {
-		usersService.findByIdAndDelete(currentUser.getId());
+		usersService.findByIdAndDelete(currentUser.getUserId());
 	}
 
 	@GetMapping("/{userId}")

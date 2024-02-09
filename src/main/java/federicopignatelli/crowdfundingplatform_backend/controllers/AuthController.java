@@ -35,7 +35,7 @@ public class AuthController {
 		} else {
 			User newUser = authService.save(newUserPayload);
 
-			return new NewUserResponseDTO(newUser.getId());
+			return new NewUserResponseDTO(newUser.getUserId());
 		}
 	}
 }

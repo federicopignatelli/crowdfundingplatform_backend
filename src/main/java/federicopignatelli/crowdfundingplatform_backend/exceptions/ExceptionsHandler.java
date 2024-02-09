@@ -1,6 +1,6 @@
 package federicopignatelli.crowdfundingplatform_backend.exceptions;
 
-import federicopignatelli.crowdfundingplatform_backend.payload.user.ErrorsDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.errors.ErrorsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

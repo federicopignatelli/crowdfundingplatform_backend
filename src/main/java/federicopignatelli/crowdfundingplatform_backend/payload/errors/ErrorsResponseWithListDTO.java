@@ -1,4 +1,4 @@
-package federicopignatelli.crowdfundingplatform_backend.payload.user;
+package federicopignatelli.crowdfundingplatform_backend.payload.errors;
 
 import java.util.Date;
 import java.util.List;
