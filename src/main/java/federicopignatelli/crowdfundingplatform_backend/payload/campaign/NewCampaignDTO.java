@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record NewCampaignDTO(
-
         @NotEmpty(message = "titolo obbligatorio")
         String title,
         @NotEmpty(message = "sottotitolo obbligatorio")
@@ -15,6 +14,7 @@ public record NewCampaignDTO(
         @NotEmpty(message = "categoria obbligatoria")
         String category,
         String description,
-        String campaignCover
+        String campaignCover,
+        Integer totalFunds
 ) {
 }

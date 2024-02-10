@@ -5,8 +5,8 @@ import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.BadRequestException;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignResponseDTO;
-import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUPDATEDTO;
-import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUPDATEResponseDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,12 +43,12 @@ public class CampaignController {
     }
 
     @PutMapping("/{campaignId}")
-    public NewCampaignUPDATEResponseDTO findByIdAndUpdate(@PathVariable UUID campaignId, @RequestBody @Validated NewCampaignUPDATEDTO body, BindingResult validation) throws BadRequestException {
+    public NewCampaignUpdateResponseDTO findByIdAndUpdate(@PathVariable UUID campaignId, @RequestBody @Validated NewCampaignUpdateDTO body, BindingResult validation) throws BadRequestException {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().toString());
         }
         campaignService.findByIdAndUpdate(campaignId, body);
-        return new NewCampaignUPDATEResponseDTO(campaignId);
+        return new NewCampaignUpdateResponseDTO(campaignId);
     }
 
     @GetMapping("/{userId}")

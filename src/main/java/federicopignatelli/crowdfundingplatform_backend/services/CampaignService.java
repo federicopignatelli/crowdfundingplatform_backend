@@ -5,8 +5,8 @@ import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignResponseDTO;
-import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUPDATEDTO;
-import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUPDATEResponseDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.repositories.CampaignRepository;
 import federicopignatelli.crowdfundingplatform_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +39,7 @@ public class CampaignService {
         newcampaign.setDescription(body.description());
         newcampaign.setStartDate(LocalDate.now());
         newcampaign.setCampaignCover(body.campaignCover());
+        newcampaign.setTotalFunds(0);
 
         User found = userRepository.findById(userid).orElseThrow(() -> new NotFoundException("User not found with"));
         newcampaign.setUserId(found);
@@ -56,7 +57,7 @@ public class CampaignService {
         return campaignRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public NewCampaignUPDATEResponseDTO findByIdAndUpdate(UUID id, NewCampaignUPDATEDTO body) {
+    public NewCampaignUpdateResponseDTO findByIdAndUpdate(UUID id, NewCampaignUpdateDTO body) {
         Campaign found = this.findById(id);
 
         if(body.title() != null){
@@ -80,7 +81,7 @@ public class CampaignService {
         }
 
         campaignRepository.save(found);
-        return new NewCampaignUPDATEResponseDTO(found.getCampaignId());
+        return new NewCampaignUpdateResponseDTO(found.getCampaignId());
     }
 
     public void findByIdAndDelete(UUID campaignId) {
