@@ -20,6 +20,7 @@ public record NewUserDTO(
 		@NotEmpty(message = "Il paese è un campo obbligatorio!")
 		String country,
 		String city,
+		@Size(max = 250, message = "La bio dev'essere di massimo 250 caratteri")
 		String bio,
 		String profilepic) {
 }
