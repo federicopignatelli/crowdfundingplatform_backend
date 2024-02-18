@@ -1,5 +1,6 @@
 package federicopignatelli.crowdfundingplatform_backend.services;
 
+import federicopignatelli.crowdfundingplatform_backend.entities.Campaign;
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.entities.enums.Role;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.BadRequestException;
@@ -11,6 +12,8 @@ import federicopignatelli.crowdfundingplatform_backend.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthService {

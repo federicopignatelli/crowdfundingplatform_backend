@@ -19,7 +19,6 @@ public class UsersController {
 	private UsersService usersService;
 
 	@GetMapping
-
 	public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
 							   @RequestParam(defaultValue = "10") int size,
 							   @RequestParam(defaultValue = "id") String orderBy) {

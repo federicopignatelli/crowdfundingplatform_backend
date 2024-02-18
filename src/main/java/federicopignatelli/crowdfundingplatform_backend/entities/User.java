@@ -1,5 +1,6 @@
 package federicopignatelli.crowdfundingplatform_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import federicopignatelli.crowdfundingplatform_backend.entities.enums.Role;
 import jakarta.persistence.*;
@@ -34,10 +35,15 @@ public class User implements UserDetails {
     private String city;
     private String bio;
     private String profilepic;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List <Campaign> campaignsList;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List <Contribution> contributionsList;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     @Override
