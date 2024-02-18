@@ -17,7 +17,6 @@ public record NewUserDTO(
 		@NotEmpty(message = "La password è un campo obbligatorio!")
 		@Size(min = 4, message = "La password deve avere minimo 4 caratteri!")
 		String password,
-		@NotEmpty(message = "Il paese è un campo obbligatorio!")
 		String country,
 		String city,
 		@Size(max = 250, message = "La bio dev'essere di massimo 250 caratteri")
