@@ -19,6 +19,7 @@ public class UsersController {
 	private UsersService usersService;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
 							   @RequestParam(defaultValue = "10") int size,
 							   @RequestParam(defaultValue = "id") String orderBy) {
@@ -27,16 +28,19 @@ public class UsersController {
 
 
 	@GetMapping("/me")
+	@PreAuthorize("hasAuthority('USER')")
 	public User getProfile(@AuthenticationPrincipal User currentUser) {
 		return currentUser;
 	}
 
 	@PutMapping("/me")
+	@PreAuthorize("hasAuthority('USER')")
 	public User getMeAndUpdate(@AuthenticationPrincipal User currentUser, @RequestBody User body) {
 		return usersService.findByIdAndUpdate(currentUser.getUserId(), body);
 	}
 
 	@DeleteMapping("/me")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public void getMeAnDelete(@AuthenticationPrincipal User currentUser) {
 		usersService.findByIdAndDelete(currentUser.getUserId());
 	}
@@ -48,7 +52,7 @@ public class UsersController {
 
 
 	@PutMapping("/{userId}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('USER')")
 	public User getUserByIdAndUpdate(@PathVariable UUID userId, @RequestBody User modifiedUserPayload) {
 		return usersService.findByIdAndUpdate(userId, modifiedUserPayload);
 	}
