@@ -1,5 +1,8 @@
 package federicopignatelli.crowdfundingplatform_backend.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import federicopignatelli.crowdfundingplatform_backend.cloudinaryconfig.Cloudinaryconfig;
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
 import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateDTO;
@@ -11,12 +14,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
 public class UsersService {
+
+	@Autowired
+	private Cloudinary cloudinary;
 	@Autowired
 	private UserRepository userRepository;
 
@@ -63,13 +71,18 @@ public class UsersService {
 			found.setBio(body.bio());
 		}
 
-		if(body.profilepic() != null){
-			found.setProfilepic(body.profilepic());
-		}
-
 		userRepository.save(found);
 		return new NewUserUpdateResponseDTO();
+	}
 
+	public String uploadAvatar(MultipartFile file, UUID id) throws IOException {
+		User found = userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+		String url = (String) cloudinary.uploader()
+				.upload(file.getBytes(), ObjectUtils.emptyMap())
+				.get("url");
+		found.setProfilepic(url);
+		userRepository.save(found);
+		return url;
 	}
 
 

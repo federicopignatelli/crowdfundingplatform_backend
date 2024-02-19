@@ -2,11 +2,13 @@ package federicopignatelli.crowdfundingplatform_backend.controllers;
 
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.BadRequestException;
+import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateResponseDTO;
+import federicopignatelli.crowdfundingplatform_backend.repositories.UserRepository;
 import federicopignatelli.crowdfundingplatform_backend.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,8 +18,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +29,9 @@ import java.util.UUID;
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -72,5 +79,11 @@ public class UsersController {
 		usersService.findByIdAndDelete(userId);
 	}
 
+	@PostMapping("/me/uploadavatar")
+	@ResponseStatus(HttpStatus.CREATED)
+	public String uploadAvatar (@RequestParam("image") MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
+		User found = userRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundException("User not found with id: " + user.getUserId()));
+		return usersService.uploadAvatar(file, found.getUserId());
+	}
 
 }

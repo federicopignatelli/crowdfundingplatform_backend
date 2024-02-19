@@ -6,7 +6,6 @@ public record NewUserUpdateDTO(
         String email,
         String country,
         String city,
-        String bio,
-        String profilepic
+        String bio
 ) {
 }
