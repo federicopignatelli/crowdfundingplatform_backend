@@ -42,14 +42,15 @@ public class UsersController {
 	}
 
 
-//	da modificare
-@PutMapping("/{userId}")
-public NewUserUpdateResponseDTO findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated NewUserUpdateDTO body, BindingResult validation) throws BadRequestException {
+
+	@PutMapping("/{userId}")
+	@PreAuthorize("hasAuthority('USER')")
+    public NewUserUpdateResponseDTO findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated NewUserUpdateDTO body, BindingResult validation) throws BadRequestException {
 	if (validation.hasErrors()) {
 		throw new BadRequestException(validation.getAllErrors().toString());
 	}
-	usersService.findByIdAndUpdate(userId, body);
-	return new NewUserUpdateResponseDTO();
+	    usersService.findByIdAndUpdate(userId, body);
+	    return new NewUserUpdateResponseDTO();
 }
 
 
