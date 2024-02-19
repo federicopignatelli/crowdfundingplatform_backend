@@ -2,6 +2,8 @@ package federicopignatelli.crowdfundingplatform_backend.services;
 
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
+import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,13 +36,40 @@ public class UsersService {
 		userRepository.delete(found);
 	}
 
-	public User findByIdAndUpdate(UUID id, User body) {
+	public NewUserUpdateResponseDTO findByIdAndUpdate(UUID id, NewUserUpdateDTO body) {
 		User found = this.findById(id);
-		found.setSurname(body.getSurname());
-		found.setName(body.getName());
-		found.setEmail(body.getEmail());
-		found.setPassword(body.getPassword());
-		return userRepository.save(found);
+
+		if(body.name() != null){
+			found.setName(body.name());
+		}
+
+		if(body.surname() != null){
+			found.setSurname(body.surname());
+		}
+
+		if(body.email() != null){
+			found.setEmail(body.email());
+		}
+
+		if(body.country() != null){
+			found.setCountry(body.country());
+		}
+
+		if(body.city() != null){
+			found.setCity(body.city());
+		}
+
+		if(body.bio() != null){
+			found.setBio(body.bio());
+		}
+
+		if(body.profilepic() != null){
+			found.setProfilepic(body.profilepic());
+		}
+
+		userRepository.save(found);
+		return new NewUserUpdateResponseDTO();
+
 	}
 
 

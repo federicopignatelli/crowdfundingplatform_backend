@@ -1,12 +1,20 @@
 package federicopignatelli.crowdfundingplatform_backend.controllers;
 
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
+import federicopignatelli.crowdfundingplatform_backend.exceptions.BadRequestException;
+import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateResponseDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserResponseDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.user.NewUserUpdateResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,11 +41,17 @@ public class UsersController {
 		return currentUser;
 	}
 
-	@PutMapping("/me")
-	@PreAuthorize("hasAuthority('USER')")
-	public User getMeAndUpdate(@AuthenticationPrincipal User currentUser, @RequestBody User body) {
-		return usersService.findByIdAndUpdate(currentUser.getUserId(), body);
+
+//	da modificare
+@PutMapping("/{userId}")
+public NewUserUpdateResponseDTO findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated NewUserUpdateDTO body, BindingResult validation) throws BadRequestException {
+	if (validation.hasErrors()) {
+		throw new BadRequestException(validation.getAllErrors().toString());
 	}
+	usersService.findByIdAndUpdate(userId, body);
+	return new NewUserUpdateResponseDTO();
+}
+
 
 	@DeleteMapping("/me")
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -48,13 +62,6 @@ public class UsersController {
 	@GetMapping("/{userId}")
 	public User getUserById(@PathVariable UUID userId) {
 		return usersService.findById(userId);
-	}
-
-
-	@PutMapping("/{userId}")
-	@PreAuthorize("hasAuthority('USER')")
-	public User getUserByIdAndUpdate(@PathVariable UUID userId, @RequestBody User modifiedUserPayload) {
-		return usersService.findByIdAndUpdate(userId, modifiedUserPayload);
 	}
 
 	@DeleteMapping("/{userId}")

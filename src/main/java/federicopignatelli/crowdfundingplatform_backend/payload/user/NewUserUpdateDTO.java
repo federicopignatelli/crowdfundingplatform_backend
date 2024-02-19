@@ -4,8 +4,7 @@ public record NewUserUpdateDTO(
         String name,
         String surname,
         String email,
-        String password,
-        String Country,
+        String country,
         String city,
         String bio,
         String profilepic
