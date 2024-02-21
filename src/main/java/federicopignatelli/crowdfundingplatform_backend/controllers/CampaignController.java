@@ -3,10 +3,12 @@ package federicopignatelli.crowdfundingplatform_backend.controllers;
 import federicopignatelli.crowdfundingplatform_backend.entities.Campaign;
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.BadRequestException;
+import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignUpdateResponseDTO;
+import federicopignatelli.crowdfundingplatform_backend.repositories.CampaignRepository;
 import federicopignatelli.crowdfundingplatform_backend.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +29,10 @@ public class CampaignController {
     @Autowired
     CampaignService campaignService;
 
-    @PostMapping
+    @Autowired
+    CampaignRepository campaignRepository;
+
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public NewCampaignResponseDTO save(@RequestBody @Validated NewCampaignDTO body, BindingResult validation, @AuthenticationPrincipal User userId) throws BadRequestException {
         if (validation.hasErrors()) {
@@ -54,5 +61,12 @@ public class CampaignController {
     @GetMapping("/{userId}")
     public List<Campaign> getCampaignByUserId(@RequestParam UUID userId) {
         return this.campaignService.getCampaignByUserId(userId);
+    }
+
+    @PostMapping("/me/uploacover")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String uploadAvatar (@RequestParam("image") MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
+        Campaign found = campaignRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundException("User not found with id: " + user.getUserId()));
+        return campaignService.uploadCoverCampaign(file, found.getCampaignId());
     }
 }

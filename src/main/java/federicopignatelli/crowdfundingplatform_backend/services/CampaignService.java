@@ -1,5 +1,7 @@
 package federicopignatelli.crowdfundingplatform_backend.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import federicopignatelli.crowdfundingplatform_backend.entities.Campaign;
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
@@ -15,7 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +35,9 @@ public class CampaignService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private Cloudinary cloudinary;
+
     public NewCampaignResponseDTO save(NewCampaignDTO body, UUID userid){
         Campaign newcampaign = new Campaign();
         newcampaign.setTitle(body.title());
@@ -38,7 +45,6 @@ public class CampaignService {
         newcampaign.setCategory(body.category());
         newcampaign.setDescription(body.description());
         newcampaign.setStartDate(LocalDate.now());
-        newcampaign.setCampaignCover(body.campaignCover());
         newcampaign.setTotalFunds(0);
 
         User found = userRepository.findById(userid).orElseThrow(() -> new NotFoundException("User not found with"));
@@ -76,10 +82,6 @@ public class CampaignService {
             found.setDescription(body.description());
         }
 
-        if(body.campaignCover() != null){
-            found.setCampaignCover(body.campaignCover());
-        }
-
         campaignRepository.save(found);
         return new NewCampaignUpdateResponseDTO(found.getCampaignId());
     }
@@ -91,5 +93,15 @@ public class CampaignService {
 
     public List<Campaign> getCampaignByUserId(UUID userId) {
         return campaignRepository.findByUserId(userId);
+    }
+
+    public String uploadCoverCampaign(MultipartFile file, UUID id) throws IOException {
+        Campaign found = campaignRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+        String url = (String) cloudinary.uploader()
+                .upload(file.getBytes(), ObjectUtils.emptyMap())
+                .get("url");
+        found.setCampaignCover(url);
+        campaignRepository.save(found);
+        return url;
     }
 }
