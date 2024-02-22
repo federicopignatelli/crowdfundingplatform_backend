@@ -13,6 +13,7 @@ import federicopignatelli.crowdfundingplatform_backend.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +34,7 @@ public class CampaignController {
     CampaignRepository campaignRepository;
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public NewCampaignResponseDTO save(@RequestBody @Validated NewCampaignDTO body, BindingResult validation, @AuthenticationPrincipal User userId) throws BadRequestException {
         if (validation.hasErrors()) {

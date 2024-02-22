@@ -13,7 +13,6 @@ public record NewCampaignDTO(
         String subtitle,
         @NotEmpty(message = "categoria obbligatoria")
         String category,
-        String description,
-        Integer totalFunds
+        String description
 ) {
 }
