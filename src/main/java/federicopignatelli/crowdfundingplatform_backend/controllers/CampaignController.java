@@ -41,7 +41,7 @@ public class CampaignController {
             throw new BadRequestException(validation.getAllErrors().toString());
         }
         campaignService.save(body, userId.getUserId());
-        return new NewCampaignResponseDTO(body.title(), userId);
+        return new NewCampaignResponseDTO(body.title(), body.subtitle());
     }
 
     @GetMapping("")

@@ -51,7 +51,7 @@ public class CampaignService {
         newcampaign.setUserId(found);
 
         campaignRepository.save(newcampaign);
-        return new NewCampaignResponseDTO(newcampaign.getTitle(), newcampaign.getUserId());
+        return new NewCampaignResponseDTO(newcampaign.getTitle(), newcampaign.getSubtitle());
     }
 
     public Page<Campaign> getCampaign(int page, int size, String sort) {
