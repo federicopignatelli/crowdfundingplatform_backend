@@ -27,6 +27,7 @@ public class Campaign {
     private LocalDate startDate = LocalDate.now();
     private String campaignCover;
     private Integer totalFunds;
+    private Integer fundsTarget;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")

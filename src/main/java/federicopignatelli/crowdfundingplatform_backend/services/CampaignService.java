@@ -44,8 +44,10 @@ public class CampaignService {
         newcampaign.setSubtitle(body.subtitle());
         newcampaign.setCategory(body.category());
         newcampaign.setDescription(body.description());
+        newcampaign.setFundsTarget(body.fundsTarget());
         newcampaign.setStartDate(LocalDate.now());
         newcampaign.setTotalFunds(0);
+
 
         User found = userRepository.findById(userid).orElseThrow(() -> new NotFoundException("User not found with"));
         newcampaign.setUserId(found);
