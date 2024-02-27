@@ -44,7 +44,7 @@ public class CampaignController {
         return new NewCampaignResponseDTO(body.title(), body.subtitle());
     }
 
-    @GetMapping("")
+    @GetMapping("/getcampaigns")
     public Page<Campaign> findAll(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   @RequestParam(defaultValue = "nomeContatto") String sortBy){
