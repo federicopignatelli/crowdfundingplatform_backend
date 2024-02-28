@@ -65,7 +65,7 @@ public class CampaignController {
         return this.campaignService.getCampaignByUserId(userId);
     }
 
-    @PostMapping("/uploacover")
+    @PostMapping("/uploadcover/{campaignId}")
     @ResponseStatus(HttpStatus.CREATED)
     public String uploadAvatar (@RequestParam("image") MultipartFile file, @PathVariable UUID campaignId ) throws IOException {
         Campaign found = campaignRepository.findById(campaignId)
