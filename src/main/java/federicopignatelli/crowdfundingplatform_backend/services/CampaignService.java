@@ -97,8 +97,8 @@ public class CampaignService {
         return campaignRepository.findByUserId(userId);
     }
 
-    public String uploadCoverCampaign(MultipartFile file, UUID id) throws IOException {
-        Campaign found = campaignRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    public String uploadCoverCampaign(MultipartFile file, UUID campaignId) throws IOException {
+        Campaign found = campaignRepository.findById(campaignId).orElseThrow(() -> new NotFoundException(campaignId));
         String url = (String) cloudinary.uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap())
                 .get("url");

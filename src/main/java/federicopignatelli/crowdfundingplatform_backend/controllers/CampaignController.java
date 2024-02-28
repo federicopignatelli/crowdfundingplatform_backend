@@ -65,10 +65,11 @@ public class CampaignController {
         return this.campaignService.getCampaignByUserId(userId);
     }
 
-    @PostMapping("/me/uploacover")
+    @PostMapping("/uploacover")
     @ResponseStatus(HttpStatus.CREATED)
-    public String uploadAvatar (@RequestParam("image") MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
-        Campaign found = campaignRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundException("User not found with id: " + user.getUserId()));
+    public String uploadAvatar (@RequestParam("image") MultipartFile file, @PathVariable UUID campaignId ) throws IOException {
+        Campaign found = campaignRepository.findById(campaignId)
+                .orElseThrow(() -> new NotFoundException("campaign not found with id: " + campaignId));
         return campaignService.uploadCoverCampaign(file, found.getCampaignId());
     }
 }
