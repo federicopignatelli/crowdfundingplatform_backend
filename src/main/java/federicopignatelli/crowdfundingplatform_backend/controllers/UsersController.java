@@ -61,13 +61,14 @@ public class UsersController {
 }
 
 
-	@DeleteMapping("/me")
+	@DeleteMapping("/deleteme")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public void getMeAnDelete(@AuthenticationPrincipal User currentUser) {
 		usersService.findByIdAndDelete(currentUser.getUserId());
 	}
 
 	@GetMapping("/{userId}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public User getUserById(@PathVariable UUID userId) {
 		return usersService.findById(userId);
 	}
@@ -80,6 +81,7 @@ public class UsersController {
 	}
 
 	@PostMapping("/me/uploadavatar")
+	@PreAuthorize("hasAuthority('USER')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public String uploadAvatar (@RequestParam("image") MultipartFile file, @AuthenticationPrincipal User user) throws IOException {
 		User found = userRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundException("User not found with id: " + user.getUserId()));

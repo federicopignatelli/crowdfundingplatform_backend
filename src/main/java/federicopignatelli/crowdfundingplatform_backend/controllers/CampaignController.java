@@ -52,6 +52,7 @@ public class CampaignController {
     }
 
     @PutMapping("/{campaignId}")
+    @PreAuthorize("hasAuthority('USER')")
     public NewCampaignUpdateResponseDTO findByIdAndUpdate(@PathVariable UUID campaignId, @RequestBody @Validated NewCampaignUpdateDTO body, BindingResult validation) throws BadRequestException {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().toString());
@@ -61,11 +62,13 @@ public class CampaignController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAuthority('USER')")
     public List<Campaign> getCampaignByUserId(@RequestParam UUID userId) {
         return this.campaignService.getCampaignByUserId(userId);
     }
 
     @PostMapping("/uploadcover/{campaignId}")
+    @PreAuthorize("hasAuthority('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public String uploadAvatar (@RequestParam("image") MultipartFile file, @PathVariable UUID campaignId ) throws IOException {
         Campaign found = campaignRepository.findById(campaignId)
