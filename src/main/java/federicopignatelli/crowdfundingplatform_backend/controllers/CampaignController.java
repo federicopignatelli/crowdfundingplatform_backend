@@ -51,14 +51,14 @@ public class CampaignController {
         return campaignService.getCampaign(page, size, sortBy);
     }
 
-    @PutMapping("/{campaignId}")
+    @PutMapping("edit/{campaignId}")
     @PreAuthorize("hasAuthority('USER')")
     public NewCampaignUpdateResponseDTO findByIdAndUpdate(@PathVariable UUID campaignId, @RequestBody @Validated NewCampaignUpdateDTO body, BindingResult validation) throws BadRequestException {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().toString());
         }
         campaignService.findByIdAndUpdate(campaignId, body);
-        return new NewCampaignUpdateResponseDTO(campaignId);
+        return new NewCampaignUpdateResponseDTO(campaignId, body.title(), body.subtitle(), body.category(), body.description());
     }
 
     @GetMapping("/{userId}")

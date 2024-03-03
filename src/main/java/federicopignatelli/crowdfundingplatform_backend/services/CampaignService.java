@@ -85,7 +85,7 @@ public class CampaignService {
         }
 
         campaignRepository.save(found);
-        return new NewCampaignUpdateResponseDTO(found.getCampaignId());
+        return new NewCampaignUpdateResponseDTO(found.getCampaignId(), found.getTitle(), found.getSubtitle(), found.getCategory(), found.getDescription());
     }
 
     public void findByIdAndDelete(UUID campaignId) {
