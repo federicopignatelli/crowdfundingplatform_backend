@@ -68,19 +68,19 @@ public class CampaignService {
     public NewCampaignUpdateResponseDTO findByIdAndUpdate(UUID id, NewCampaignUpdateDTO body) {
         Campaign found = this.findById(id);
 
-        if(body.title() != null){
+        if(body.title() != null && !body.title().isEmpty()){
             found.setTitle(body.title());
         }
 
-        if(body.subtitle() != null){
+        if(body.subtitle() != null && !body.subtitle().isEmpty()){
             found.setSubtitle(body.subtitle());
         }
 
-        if(body.category() != null){
+        if(body.category() != null && !body.category().isEmpty()){
             found.setCategory(body.category());
         }
 
-        if(body.description() != null){
+        if(body.description() != null && !body.description().isEmpty()){
             found.setDescription(body.description());
         }
 
