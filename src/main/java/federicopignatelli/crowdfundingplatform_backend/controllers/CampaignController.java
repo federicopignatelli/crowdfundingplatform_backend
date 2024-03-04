@@ -75,4 +75,11 @@ public class CampaignController {
                 .orElseThrow(() -> new NotFoundException("campaign not found with id: " + campaignId));
         return campaignService.uploadCoverCampaign(file, found.getCampaignId());
     }
+
+    @DeleteMapping("/{campaignId}")
+    @PreAuthorize("hasAuthority('USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findByIdAndDelete(@PathVariable UUID campaignId) {
+        campaignService.findByIdAndDelete(campaignId);
+    }
 }
