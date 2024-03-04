@@ -1,5 +1,6 @@
 package federicopignatelli.crowdfundingplatform_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class Campaign {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User userId;
+    @JsonIgnore
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
     private List<Contribution> contributionList;
 }

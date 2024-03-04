@@ -5,11 +5,16 @@ import federicopignatelli.crowdfundingplatform_backend.entities.Contribution;
 import federicopignatelli.crowdfundingplatform_backend.entities.User;
 import federicopignatelli.crowdfundingplatform_backend.exceptions.NotFoundException;
 import federicopignatelli.crowdfundingplatform_backend.payload.Contribution.NewContributionDTO;
+import federicopignatelli.crowdfundingplatform_backend.payload.Contribution.NewContributionResponseDTO;
 import federicopignatelli.crowdfundingplatform_backend.payload.campaign.NewCampaignDTO;
 import federicopignatelli.crowdfundingplatform_backend.repositories.CampaignRepository;
 import federicopignatelli.crowdfundingplatform_backend.repositories.ContributionRepository;
 import federicopignatelli.crowdfundingplatform_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -31,7 +36,7 @@ public class ContributionService {
     @Autowired
     CampaignRepository campaignRepository;
 
-    public Contribution createContribution(NewContributionDTO body, UUID userId, UUID campaignId) {
+    public NewContributionResponseDTO createContribution(NewContributionDTO body, UUID userId, UUID campaignId) {
 
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException("Utente non trovato con questo id"));
@@ -49,6 +54,11 @@ public class ContributionService {
         contributionRepository.save(contribution);
         campaignRepository.save(campaign);
 
-        return contribution;
+        return new NewContributionResponseDTO(contribution.getAmount());
+    }
+
+    public Page<Contribution> getContributions(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return this.contributionRepository.findAll(pageable);
     }
 }
