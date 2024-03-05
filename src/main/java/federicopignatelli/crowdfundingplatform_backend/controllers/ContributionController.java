@@ -42,7 +42,7 @@ public class ContributionController {
 
     @GetMapping("/getcontributions")
     public Page<Contribution> findAll(@RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "100") int size,
                                       @RequestParam(defaultValue = "emissionDate") String sortBy){
         return contributionService.getContributions(page, size, sortBy);
     }

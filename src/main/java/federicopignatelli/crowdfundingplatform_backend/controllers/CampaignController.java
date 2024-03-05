@@ -46,7 +46,7 @@ public class CampaignController {
 
     @GetMapping("/getcampaigns")
     public Page<Campaign> findAll(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "100") int size,
                                   @RequestParam(defaultValue = "startDate") String sortBy){
         return campaignService.getCampaign(page, size, sortBy);
     }
