@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,7 @@ public class ContributionService {
     @Autowired
     CampaignRepository campaignRepository;
 
-    public NewContributionResponseDTO createContribution(NewContributionDTO body, UUID userId, UUID campaignId) {
+    public NewContributionResponseDTO createContribution(NewContributionDTO body, UUID userId, UUID campaignId, LocalTime emissionTime) {
 
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException("Utente non trovato con questo id"));
@@ -48,6 +49,7 @@ public class ContributionService {
         contribution.setUserId(user);
         contribution.setCampaign(campaign);
         contribution.setAmount(body.amount());
+        contribution.setEmissionTime(emissionTime);
 
         campaign.setTotalFunds(campaign.getTotalFunds() + body.amount());
 

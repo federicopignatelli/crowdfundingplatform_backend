@@ -22,7 +22,7 @@ public class Contribution {
     private UUID contributionId;
     private int amount;
     private LocalDate emissionDate = LocalDate.now();
-    private LocalTime emissionTime = LocalTime.now();
+    private LocalTime emissionTime;
     @ManyToOne
     @JoinColumn(name = "contributor")
     private User userId;

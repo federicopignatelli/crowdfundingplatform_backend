@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +37,7 @@ public class ContributionController {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors().toString());
         }
-        contributionService.createContribution(body, userId.getUserId(), campaignId);
+        contributionService.createContribution(body, userId.getUserId(), campaignId, LocalTime.now());
         return new NewContributionResponseDTO(body.amount());
     }
 
