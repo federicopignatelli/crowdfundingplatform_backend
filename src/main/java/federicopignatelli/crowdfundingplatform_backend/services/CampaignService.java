@@ -56,8 +56,8 @@ public class CampaignService {
         return new NewCampaignResponseDTO(newcampaign.getTitle(), newcampaign.getSubtitle());
     }
 
-    public Page<Campaign> getCampaign(int page, int size, String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+    public Page<Campaign> getCampaign(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("startDate").descending());
         return this.campaignRepository.findAll(pageable);
     }
 
